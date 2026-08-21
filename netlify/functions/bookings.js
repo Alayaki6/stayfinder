@@ -1,6 +1,9 @@
 export default async (request) => {
 
-  // Only allow POST requests
+  // =========================================
+  // METHOD CHECK
+  // =========================================
+
   if (request.method !== "POST") {
 
     return new Response(
@@ -21,6 +24,10 @@ export default async (request) => {
 
   try {
 
+    // =========================================
+    // READ REQUEST
+    // =========================================
+
     const body =
       await request.json();
 
@@ -37,9 +44,9 @@ export default async (request) => {
     } = body;
 
 
-    // =====================================
-    // VALIDATION
-    // =====================================
+    // =========================================
+    // REQUIRED FIELDS
+    // =========================================
 
     if (
       !propertyId ||
@@ -69,12 +76,45 @@ export default async (request) => {
     }
 
 
-    // =====================================
+    // =========================================
+    // EMAIL VALIDATION
+    // =========================================
+
+    const emailPattern =
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+    if (
+      !emailPattern.test(
+        String(guestEmail).trim()
+      )
+    ) {
+
+      return new Response(
+        JSON.stringify({
+          success: false,
+          message:
+            "Please provide a valid email address."
+        }),
+        {
+          status: 400,
+          headers: {
+            "Content-Type":
+              "application/json"
+          }
+        }
+      );
+
+    }
+
+
+    // =========================================
     // DATE VALIDATION
-    // =====================================
+    // =========================================
 
     const startDate =
       new Date(checkIn);
+
 
     const endDate =
       new Date(checkOut);
@@ -107,7 +147,9 @@ export default async (request) => {
     }
 
 
-    if (endDate <= startDate) {
+    if (
+      endDate <= startDate
+    ) {
 
       return new Response(
         JSON.stringify({
@@ -127,44 +169,84 @@ export default async (request) => {
     }
 
 
-    // =====================================
-    // BOOKING ID
-    // =====================================
+    // =========================================
+    // GUEST VALIDATION
+    // =========================================
+
+    const guestNumber =
+      Number(guests);
+
+
+    if (
+      !Number.isInteger(
+        guestNumber
+      ) ||
+      guestNumber < 1
+    ) {
+
+      return new Response(
+        JSON.stringify({
+          success: false,
+          message:
+            "Please provide a valid number of guests."
+        }),
+        {
+          status: 400,
+          headers: {
+            "Content-Type":
+              "application/json"
+          }
+        }
+      );
+
+    }
+
+
+    // =========================================
+    // CREATE BOOKING ID
+    // =========================================
 
     const bookingId =
       `SF-${Date.now()}`;
 
 
-    // =====================================
-    // BOOKING RECORD
-    // =====================================
+    // =========================================
+    // BOOKING OBJECT
+    // =========================================
 
     const booking = {
 
       bookingId,
 
       propertyId:
-
         Number(propertyId),
 
       guestName:
-        String(guestName).trim(),
+        String(
+          guestName
+        ).trim(),
 
       guestPhone:
-        String(guestPhone).trim(),
+        String(
+          guestPhone
+        ).trim(),
 
       guestEmail:
-        String(guestEmail).trim(),
+        String(
+          guestEmail
+        ).trim(),
 
       checkIn,
 
       checkOut,
 
       guests:
-        Number(guests),
+        guestNumber,
 
       message:
-        String(message || "").trim(),
+        String(
+          message || ""
+        ).trim(),
 
       status:
         "pending",
@@ -175,19 +257,26 @@ export default async (request) => {
     };
 
 
-    // =====================================
-    // TEMPORARY STORAGE
-    // =====================================
+    // =========================================
+    // SERVER LOG
+    // =========================================
 
     console.log(
-      "NEW STAYFINDER BOOKING:",
-      booking
+      "NEW STAYFINDER BOOKING"
+    );
+
+    console.log(
+      JSON.stringify(
+        booking,
+        null,
+        2
+      )
     );
 
 
-    // =====================================
+    // =========================================
     // SUCCESS RESPONSE
-    // =====================================
+    // =========================================
 
     return new Response(
       JSON.stringify({
@@ -195,9 +284,12 @@ export default async (request) => {
         success: true,
 
         message:
-          "Booking request received.",
+          "Booking request received successfully.",
 
-        bookingId
+        bookingId,
+
+        status:
+          "pending"
 
       }),
       {
@@ -215,7 +307,7 @@ export default async (request) => {
   } catch (error) {
 
     console.error(
-      "Booking error:",
+      "BOOKING ERROR:",
       error
     );
 
@@ -226,7 +318,7 @@ export default async (request) => {
         success: false,
 
         message:
-          "Unable to process booking request."
+          "Unable to process your booking request. Please try again."
 
       }),
       {
@@ -236,6 +328,7 @@ export default async (request) => {
           "Content-Type":
             "application/json"
         }
+
       }
     );
 
