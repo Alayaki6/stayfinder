@@ -1,4 +1,5 @@
 const API_URL = "/.netlify/functions/properties";
+const BOOKING_API = "/.netlify/functions/bookings";
 
 const selectedProperty =
   document.getElementById("selectedProperty");
@@ -27,6 +28,7 @@ function getPropertyId() {
   return Number(
     params.get("id")
   );
+
 }
 
 
@@ -44,7 +46,29 @@ function formatPrice(price) {
 
 
 // =========================================
-// LOAD SELECTED PROPERTY
+// DISPLAY MESSAGE
+// =========================================
+
+function showMessage(
+  message,
+  type = ""
+) {
+
+  if (!formMessage) {
+    return;
+  }
+
+  formMessage.textContent =
+    message;
+
+  formMessage.className =
+    `form-message ${type}`;
+
+}
+
+
+// =========================================
+// LOAD PROPERTY
 // =========================================
 
 async function loadProperty() {
@@ -56,6 +80,7 @@ async function loadProperty() {
   if (!propertyId) {
 
     selectedProperty.innerHTML = `
+
       <div class="empty-state">
 
         <h3>
@@ -75,12 +100,14 @@ async function loadProperty() {
         </a>
 
       </div>
+
     `;
 
     bookingForm.style.display =
       "none";
 
     return;
+
   }
 
 
@@ -103,6 +130,20 @@ async function loadProperty() {
       await response.json();
 
 
+    if (
+      !data.success ||
+      !Array.isArray(
+        data.properties
+      )
+    ) {
+
+      throw new Error(
+        "Invalid property data."
+      );
+
+    }
+
+
     const property =
       data.properties.find(
         (item) =>
@@ -119,6 +160,12 @@ async function loadProperty() {
     }
 
 
+    const type =
+      property.type === "shortlet"
+        ? "Short-let"
+        : "Hotel";
+
+
     selectedProperty.innerHTML = `
 
       <div class="selected-property-info">
@@ -127,20 +174,21 @@ async function loadProperty() {
           YOUR SELECTED STAY
         </p>
 
+
         <h2>
           ${property.name}
         </h2>
+
 
         <p>
           📍 ${property.location}
         </p>
 
+
         <div class="selected-property-meta">
 
           <span>
-            ${property.type === "shortlet"
-              ? "Short-let"
-              : "Hotel"}
+            ${type}
           </span>
 
           <span>
@@ -153,17 +201,21 @@ async function loadProperty() {
 
         </div>
 
+
         <strong>
+
           ₦${formatPrice(property.price)}
-          <small>/ night</small>
+
+          <small>
+            / night
+          </small>
+
         </strong>
 
       </div>
 
     `;
 
-
-    // Store property ID on form
 
     bookingForm.dataset.propertyId =
       property.id;
@@ -175,6 +227,7 @@ async function loadProperty() {
 
 
     selectedProperty.innerHTML = `
+
       <div class="empty-state">
 
         <h3>
@@ -182,10 +235,12 @@ async function loadProperty() {
         </h3>
 
         <p>
-          Please return and try again.
+          Please return to the stays page
+          and try again.
         </p>
 
       </div>
+
     `;
 
   }
@@ -254,7 +309,13 @@ function validateForm() {
   }
 
 
-  if (!email.includes("@")) {
+  const emailPattern =
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+  if (
+    !emailPattern.test(email)
+  ) {
 
     showMessage(
       "Please enter a valid email address.",
@@ -266,15 +327,17 @@ function validateForm() {
   }
 
 
-  const start =
+  const startDate =
     new Date(checkIn);
 
 
-  const end =
+  const endDate =
     new Date(checkOut);
 
 
-  if (end <= start) {
+  if (
+    endDate <= startDate
+  ) {
 
     showMessage(
       "Check-out must be after check-in.",
@@ -292,186 +355,172 @@ function validateForm() {
 
 
 // =========================================
-// MESSAGE
-// =========================================
-
-function showMessage(
-  message,
-  type
-) {
-
-  formMessage.textContent =
-    message;
-
-
-  formMessage.className =
-    `form-message ${type}`;
-
-}
-
-
-// =========================================
 // SUBMIT BOOKING
 // =========================================
 
-bookingForm.addEventListener(
-  "submit",
-  async (event) => {
+if (bookingForm) {
 
-    event.preventDefault();
+  bookingForm.addEventListener(
+    "submit",
+    async (event) => {
 
-
-    if (!validateForm()) {
-      return;
-    }
+      event.preventDefault();
 
 
-    const propertyId =
-      bookingForm.dataset.propertyId;
+      if (!validateForm()) {
+        return;
+      }
 
 
-    if (!propertyId) {
-
-      showMessage(
-        "Please select a property first.",
-        "error"
-      );
-
-      return;
-
-    }
+      const propertyId =
+        bookingForm.dataset.propertyId;
 
 
-    const bookingData = {
+      if (!propertyId) {
 
-      propertyId:
-        Number(propertyId),
-
-      guestName:
-        document.getElementById(
-          "guestName"
-        ).value.trim(),
-
-      guestPhone:
-        document.getElementById(
-          "guestPhone"
-        ).value.trim(),
-
-      guestEmail:
-        document.getElementById(
-          "guestEmail"
-        ).value.trim(),
-
-      checkIn:
-        document.getElementById(
-          "checkIn"
-        ).value,
-
-      checkOut:
-        document.getElementById(
-          "checkOut"
-        ).value,
-
-      guests:
-        Number(
-          document.getElementById(
-            "guestCount"
-          ).value
-        ),
-
-      message:
-        document.getElementById(
-          "guestMessage"
-        ).value.trim()
-
-    };
-
-
-    bookingSubmit.disabled =
-      true;
-
-
-    bookingSubmit.textContent =
-      "Sending Request...";
-
-
-    showMessage(
-      "",
-      ""
-    );
-
-
-    try {
-
-      const response =
-        await fetch(
-          "/.netlify/functions/bookings",
-          {
-            method: "POST",
-
-            headers: {
-              "Content-Type":
-                "application/json"
-            },
-
-            body:
-              JSON.stringify(
-                bookingData
-              )
-          }
+        showMessage(
+          "Please select a property first.",
+          "error"
         );
 
-
-      const result =
-        await response.json();
-
-
-      if (!response.ok) {
-
-        throw new Error(
-          result.message ||
-          "Booking request failed."
-        );
+        return;
 
       }
 
 
-      bookingForm.reset();
+      const bookingData = {
 
+        propertyId:
+          Number(propertyId),
 
-      showMessage(
-        "🎉 Booking request sent successfully! We'll contact you soon.",
-        "success"
-      );
+        guestName:
+          document.getElementById(
+            "guestName"
+          ).value.trim(),
 
+        guestPhone:
+          document.getElementById(
+            "guestPhone"
+          ).value.trim(),
 
-      bookingSubmit.textContent =
-        "Request Sent";
+        guestEmail:
+          document.getElementById(
+            "guestEmail"
+          ).value.trim(),
 
+        checkIn:
+          document.getElementById(
+            "checkIn"
+          ).value,
 
-    } catch (error) {
+        checkOut:
+          document.getElementById(
+            "checkOut"
+          ).value,
 
-      console.error(error);
+        guests:
+          Number(
+            document.getElementById(
+              "guestCount"
+            ).value
+          ),
 
+        message:
+          document.getElementById(
+            "guestMessage"
+          ).value.trim()
 
-      showMessage(
-        error.message ||
-        "Something went wrong. Please try again.",
-        "error"
-      );
+      };
 
 
       bookingSubmit.disabled =
-        false;
+        true;
 
 
       bookingSubmit.textContent =
-        "Send Booking Request";
+        "Sending Request...";
+
+
+      showMessage(
+        "",
+        ""
+      );
+
+
+      try {
+
+        const response =
+          await fetch(
+            BOOKING_API,
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify(
+                  bookingData
+                )
+
+            }
+          );
+
+
+        const result =
+          await response.json();
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            result.message ||
+            "Booking request failed."
+          );
+
+        }
+
+
+        bookingForm.reset();
+
+
+        showMessage(
+          `🎉 Booking request sent successfully! Your booking ID is ${result.bookingId}.`,
+          "success"
+        );
+
+
+        bookingSubmit.textContent =
+          "Request Sent";
+
+
+      } catch (error) {
+
+        console.error(error);
+
+
+        showMessage(
+          error.message ||
+          "Something went wrong. Please try again.",
+          "error"
+        );
+
+
+        bookingSubmit.disabled =
+          false;
+
+
+        bookingSubmit.textContent =
+          "Send Booking Request";
+
+      }
 
     }
+  );
 
-  }
-);
+}
 
 
 // =========================================
