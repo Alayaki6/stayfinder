@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Request a booking with StayFinder."
+  >
+
+  <title>Request a Booking | StayFinder</title>
+
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+  <!-- NAVIGATION -->
+
+  <nav class="navbar">
+
+    <a href="index.html" class="logo">
+      Stay<span>Finder</span>
+    </a>
+
+
+    <div class="nav-links">
+
+      <a href="index.html">
+        Home
+      </a>
+
+      <a href="index.html#stays">
+        Stays
+      </a>
+
+      <a href="index.html#about">
+        About
+      </a>
+
+      <a href="index.html#contact">
+        Contact
+      </a>
+
+    </div>
+
+
+    <a
+      href="index.html#stays"
+      class="nav-button"
+    >
+      Browse Stays
+    </a>
+
+
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-label="Open menu"
+      aria-expanded="false"
+    >
+
+      <span></span>
+      <span></span>
+      <span></span>
+
+    </button>
+
+  </nav>
+
+
+
+  <!-- BOOKING -->
+
+  <main class="booking-page">
+
+    <div class="booking-container">
+
+
+      <div class="booking-intro">
+
+        <p class="eyebrow">
+          STAYFINDER
+        </p>
+
+
+        <h1>
+          Request your
+          <span>stay.</span>
+        </h1>
+
+
+        <p>
+          Complete the form and send us your
+          booking request. We'll get back to you
+          with availability and confirmation.
+        </p>
+
+      </div>
+
+
+
+      <div class="booking-card">
+
+        <div
+          id="selectedProperty"
+          class="selected-property"
+        >
+
+          <p class="loading-text">
+            Loading stay...
+          </p>
+
+        </div>
+
+
+
+        <form
+          id="bookingForm"
+          novalidate
+        >
+
+
+          <div class="form-row">
+
+            <div class="form-group">
+
+              <label for="guestName">
+                Full name
+              </label>
+
+              <input
+                type="text"
+                id="guestName"
+                name="guestName"
+                placeholder="Your full name"
+                required
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="guestPhone">
+                Phone number
+              </label>
+
+              <input
+                type="tel"
+                id="guestPhone"
+                name="guestPhone"
+                placeholder="Your phone number"
+                required
+              >
+
+            </div>
+
+          </div>
+
+
+
+          <div class="form-group">
+
+            <label for="guestEmail">
+              Email address
+            </label>
+
+            <input
+              type="email"
+              id="guestEmail"
+              name="guestEmail"
+              placeholder="you@example.com"
+              required
+            >
+
+          </div>
+
+
+
+          <div class="form-row">
+
+            <div class="form-group">
+
+              <label for="checkIn">
+                Check-in
+              </label>
+
+              <input
+                type="date"
+                id="checkIn"
+                name="checkIn"
+                required
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="checkOut">
+                Check-out
+              </label>
+
+              <input
+                type="date"
+                id="checkOut"
+                name="checkOut"
+                required
+              >
+
+            </div>
+
+          </div>
+
+
+
+          <div class="form-group">
+
+            <label for="guestCount">
+              Number of guests
+            </label>
+
+            <select
+              id="guestCount"
+              name="guestCount"
+              required
+            >
+
+              <option value="">
+                Select guests
+              </option>
+
+              <option value="1">
+                1 guest
+              </option>
+
+              <option value="2">
+                2 guests
+              </option>
+
+              <option value="3">
+                3 guests
+              </option>
+
+              <option value="4">
+                4 guests
+              </option>
+
+              <option value="5">
+                5 guests
+              </option>
+
+              <option value="6">
+                6 guests
+              </option>
+
+              <option value="7">
+                7 guests
+              </option>
+
+              <option value="8">
+                8+ guests
+              </option>
+
+            </select>
+
+          </div>
+
+
+
+          <div class="form-group">
+
+            <label for="guestMessage">
+              Additional message
+            </label>
+
+            <textarea
+              id="guestMessage"
+              name="guestMessage"
+              rows="5"
+              placeholder="Anything you'd like us to know?"
+            ></textarea>
+
+          </div>
+
+
+
+          <button
+            type="submit"
+            class="booking-submit"
+            id="bookingSubmit"
+          >
+            Send Booking Request
+          </button>
+
+
+          <p
+            id="formMessage"
+            class="form-message"
+            role="status"
+          ></p>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+
+  <!-- FOOTER -->
+
+  <footer>
+
+    <p>
+      © 2026 StayFinder
+    </p>
+
+    <p>
+      Built by Quadri Alayaki
+    </p>
+
+  </footer>
+
+
+
+  <script src="booking.js"></script>
+
+</body>
+
+</html>
