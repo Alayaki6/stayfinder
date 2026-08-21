@@ -329,3 +329,242 @@
   }
 
 }
+/* =========================================
+   STAYFINDER ANIMATIONS
+========================================= */
+
+@keyframes stayFadeUp {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(25px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+
+}
+
+
+@keyframes stayFadeIn {
+
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+
+}
+
+
+@keyframes stayScaleIn {
+
+  from {
+    opacity: 0;
+
+    transform:
+      scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      scale(1);
+  }
+
+}
+
+
+/* PAGE LOAD */
+
+body {
+  animation:
+    stayFadeIn
+    0.6s
+    ease
+    both;
+}
+
+
+/* PROPERTY CARDS */
+
+.property-card {
+  animation:
+    stayFadeUp
+    0.65s
+    ease
+    both;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+
+.property-card:hover {
+  transform:
+    translateY(-7px);
+
+  box-shadow:
+    0 20px 45px
+    rgba(23, 32, 25, 0.1);
+}
+
+
+/* PROPERTY IMAGES */
+
+.property-image img {
+  transition:
+    transform 0.6s
+    cubic-bezier(
+      0.2,
+      0.7,
+      0.2,
+      1
+    );
+}
+
+
+.property-card:hover
+.property-image img {
+  transform:
+    scale(1.05);
+}
+
+
+/* BUTTONS */
+
+button,
+.nav-button,
+.contact-button,
+.view-button {
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+button:hover,
+.nav-button:hover,
+.contact-button:hover,
+.view-button:hover {
+  transform:
+    translateY(-2px);
+}
+
+
+/* DETAILS IMAGE */
+
+.property-detail-image {
+  animation:
+    stayScaleIn
+    0.7s
+    ease
+    both;
+}
+
+
+/* DETAILS CONTENT */
+
+.property-detail-content {
+  animation:
+    stayFadeUp
+    0.7s
+    0.15s
+    ease
+    both;
+}
+
+
+/* BOOKING CARD */
+
+.booking-card {
+  animation:
+    stayFadeUp
+    0.7s
+    0.1s
+    ease
+    both;
+}
+
+
+/* AMENITIES */
+
+.amenity-list span {
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.amenity-list span:hover {
+  transform:
+    translateY(-3px);
+
+  border-color:
+    rgba(
+      79,
+      125,
+      90,
+      0.35
+    );
+
+  box-shadow:
+    0 8px 20px
+    rgba(
+      23,
+      32,
+      25,
+      0.06
+    );
+}
+
+
+/* LOADING */
+
+.loading-state {
+  animation:
+    stayFadeIn
+    0.5s
+    ease
+    both;
+}
+
+
+/* ACCESSIBILITY */
+
+@media (
+  prefers-reduced-motion: reduce
+) {
+
+  *,
+  *::before,
+  *::after {
+
+    animation-duration:
+      0.01ms !important;
+
+    animation-iteration-count:
+      1 !important;
+
+    scroll-behavior:
+      auto !important;
+
+    transition-duration:
+      0.01ms !important;
+
+  }
+
+}
