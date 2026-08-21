@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Explore property details and request your next stay with StayFinder."
+  >
+
+  <meta
+    name="keywords"
+    content="Lagos hotels, Lagos shortlets, apartments, accommodation, StayFinder"
+  >
+
+  <meta
+    name="author"
+    content="Quadri Alayaki"
+  >
+
+  <meta
+    name="theme-color"
+    content="#172019"
+  >
+
+  <meta
+    property="og:title"
+    content="Property Details | StayFinder"
+  >
+
+  <meta
+    property="og:description"
+    content="Explore comfortable hotels and short-let stays with StayFinder."
+  >
+
+  <meta
+    property="og:type"
+    content="website"
+  >
+
+  <meta
+    name="twitter:card"
+    content="summary"
+  >
+
+  <title>
+    Stay Details | StayFinder
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
+</head>
+
+
+<body>
+
+
+  <!-- NAVIGATION -->
+
+  <nav class="navbar">
+
+    <a
+      href="index.html"
+      class="logo"
+    >
+      Stay<span>Finder</span>
+    </a>
+
+
+    <div class="nav-links">
+
+      <a href="index.html">
+        Home
+      </a>
+
+      <a href="index.html#stays">
+        Stays
+      </a>
+
+      <a href="index.html#about">
+        About
+      </a>
+
+      <a href="index.html#contact">
+        Contact
+      </a>
+
+    </div>
+
+
+    <a
+      href="index.html#stays"
+      class="nav-button"
+    >
+      Browse Stays
+    </a>
+
+
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-label="Open menu"
+      aria-expanded="false"
+    >
+
+      <span></span>
+      <span></span>
+      <span></span>
+
+    </button>
+
+  </nav>
+
+
+
+  <!-- PROPERTY DETAILS -->
+
+  <main class="property-page">
+
+    <div
+      id="propertyDetails"
+      class="property-details-page"
+    >
+
+      <div class="loading-state">
+
+        <h2>
+          Loading stay...
+        </h2>
+
+        <p>
+          Please wait while we find the property.
+        </p>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+
+  <!-- FOOTER -->
+
+  <footer>
+
+    <p>
+      © 2026 StayFinder
+    </p>
+
+
+    <p>
+      Built by Quadri Alayaki
+    </p>
+
+  </footer>
+
+
+
+  <!-- JAVASCRIPT -->
+
+  <script src="property.js"></script>
+
+</body>
+
+</html>
