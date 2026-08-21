@@ -1,10 +1,17 @@
-const propertyGrid = document.getElementById("propertyGrid");
+const propertyGrid =
+  document.getElementById("propertyGrid");
 
-const searchButton = document.getElementById("searchButton");
-const locationInput = document.getElementById("locationInput");
-const typeInput = document.getElementById("typeInput");
+const searchButton =
+  document.getElementById("searchButton");
 
-const API_URL = "/.netlify/functions/properties";
+const locationInput =
+  document.getElementById("locationInput");
+
+const typeInput =
+  document.getElementById("typeInput");
+
+const API_URL =
+  "/.netlify/functions/properties";
 
 let properties = [];
 
@@ -14,121 +21,11 @@ let properties = [];
 // =========================================
 
 function formatPrice(price) {
-  return new Intl.NumberFormat("en-NG").format(price);
-}
 
+  return new Intl.NumberFormat(
+    "en-NG"
+  ).format(price);
 
-// =========================================
-// DISPLAY PROPERTIES
-// =========================================
-
-function displayProperties(list) {
-
-  if (!propertyGrid) return;
-
-  if (list.length === 0) {
-
-    propertyGrid.innerHTML = `
-      <div class="empty-state">
-        <h3>No stays found</h3>
-        <p>
-          Try another location or stay type.
-        </p>
-      </div>
-    `;
-
-    return;
-  }
-
-
-  propertyGrid.innerHTML = list.map((property) => {
-
-    const type =
-      property.type === "shortlet"
-        ? "Short-let"
-        : "Hotel";
-
-
-    return `
-      <article
-        class="property-card"
-        data-id="${property.id}"
-      >
-
-        <div class="property-image">
-
-          <img
-            src="${getPropertyImage(property.id)}"
-            alt="${property.name}"
-            loading="lazy"
-          >
-
-          <span class="property-type">
-            ${type}
-          </span>
-
-          <button
-            class="favorite"
-            type="button"
-            aria-label="Save ${property.name}"
-            data-favorite="${property.id}"
-          >
-            ♡
-          </button>
-
-        </div>
-
-
-        <div class="property-info">
-
-          <p class="property-location">
-            ${property.location}
-          </p>
-
-          <h3>
-            ${property.name}
-          </h3>
-
-
-          <div class="property-details">
-
-            <span>
-              👤 ${property.guests} guests
-            </span>
-
-            <span>
-              🛏 ${property.beds} beds
-            </span>
-
-          </div>
-
-
-          <div class="property-bottom">
-
-            <p class="property-price">
-              ₦${formatPrice(property.price)}
-              <span>/ night</span>
-            </p>
-
-            <button
-              class="view-button"
-              type="button"
-              data-view="${property.id}"
-            >
-              View stay
-            </button>
-
-          </div>
-
-        </div>
-
-      </article>
-    `;
-
-  }).join("");
-
-
-  addPropertyEvents();
 }
 
 
@@ -161,6 +58,140 @@ function getPropertyImage(id) {
   };
 
   return images[id];
+
+}
+
+
+// =========================================
+// DISPLAY PROPERTIES
+// =========================================
+
+function displayProperties(list) {
+
+  if (!propertyGrid) return;
+
+
+  if (list.length === 0) {
+
+    propertyGrid.innerHTML = `
+      <div class="empty-state">
+
+        <h3>
+          No stays found
+        </h3>
+
+        <p>
+          Try another location or stay type.
+        </p>
+
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  propertyGrid.innerHTML =
+    list.map((property) => {
+
+      const type =
+        property.type === "shortlet"
+          ? "Short-let"
+          : "Hotel";
+
+
+      return `
+
+        <article
+          class="property-card"
+          data-id="${property.id}"
+        >
+
+          <div class="property-image">
+
+            <img
+              src="${getPropertyImage(property.id)}"
+              alt="${property.name}"
+              loading="lazy"
+            >
+
+            <span class="property-type">
+              ${type}
+            </span>
+
+
+            <button
+              class="favorite"
+              type="button"
+              aria-label="Save ${property.name}"
+              data-favorite="${property.id}"
+            >
+              ♡
+            </button>
+
+          </div>
+
+
+          <div class="property-info">
+
+            <p class="property-location">
+              ${property.location}
+            </p>
+
+
+            <h3>
+              ${property.name}
+            </h3>
+
+
+            <div class="property-details">
+
+              <span>
+                👤 ${property.guests} guests
+              </span>
+
+              <span>
+                🛏 ${property.beds} beds
+              </span>
+
+            </div>
+
+
+            <div class="property-bottom">
+
+              <p class="property-price">
+
+                ₦${formatPrice(property.price)}
+
+                <span>
+                  / night
+                </span>
+
+              </p>
+
+
+              <button
+                class="view-button"
+                type="button"
+                data-view="${property.id}"
+              >
+                View stay
+              </button>
+
+            </div>
+
+          </div>
+
+        </article>
+
+      `;
+
+    }).join("");
+
+
+  addPropertyEvents();
+
 }
 
 
@@ -170,6 +201,9 @@ function getPropertyImage(id) {
 
 function addPropertyEvents() {
 
+
+  // FAVORITES
+
   document
     .querySelectorAll("[data-favorite]")
     .forEach((button) => {
@@ -178,10 +212,15 @@ function addPropertyEvents() {
         "click",
         () => {
 
-          button.classList.toggle("saved");
+          button.classList.toggle(
+            "saved"
+          );
+
 
           button.textContent =
-            button.classList.contains("saved")
+            button.classList.contains(
+              "saved"
+            )
               ? "♥"
               : "♡";
 
@@ -190,6 +229,8 @@ function addPropertyEvents() {
 
     });
 
+
+  // VIEW PROPERTY
 
   document
     .querySelectorAll("[data-view]")
@@ -200,27 +241,17 @@ function addPropertyEvents() {
         () => {
 
           const id =
-            Number(button.dataset.view);
-
-          const property =
-            properties.find(
-              (item) => item.id === id
-            );
-
-          if (!property) return;
+            button.dataset.view;
 
 
-          alert(
-            `${property.name}\n\n` +
-            `${property.location}\n` +
-            `₦${formatPrice(property.price)} per night\n\n` +
-            `Booking functionality will be connected in the next stage.`
-          );
+          window.location.href =
+            `property.html?id=${id}`;
 
         }
       );
 
     });
+
 }
 
 
@@ -241,29 +272,33 @@ function searchProperties() {
 
 
   const filtered =
-    properties.filter((property) => {
+    properties.filter(
+      (property) => {
 
-      const matchesLocation =
-        location === "" ||
-        property.location
-          .toLowerCase()
-          .includes(location);
-
-
-      const matchesType =
-        type === "all" ||
-        property.type === type;
+        const matchesLocation =
+          location === "" ||
+          property.location
+            .toLowerCase()
+            .includes(location);
 
 
-      return (
-        matchesLocation &&
-        matchesType
-      );
-
-    });
+        const matchesType =
+          type === "all" ||
+          property.type === type;
 
 
-  displayProperties(filtered);
+        return (
+          matchesLocation &&
+          matchesType
+        );
+
+      }
+    );
+
+
+  displayProperties(
+    filtered
+  );
 
 
   document
@@ -271,6 +306,7 @@ function searchProperties() {
     ?.scrollIntoView({
       behavior: "smooth"
     });
+
 }
 
 
@@ -291,7 +327,9 @@ if (locationInput) {
     (event) => {
 
       if (event.key === "Enter") {
+
         searchProperties();
+
       }
 
     }
@@ -305,20 +343,30 @@ if (locationInput) {
 // =========================================
 
 const menuToggle =
-  document.querySelector(".menu-toggle");
+  document.querySelector(
+    ".menu-toggle"
+  );
+
 
 const navLinks =
-  document.querySelector(".nav-links");
+  document.querySelector(
+    ".nav-links"
+  );
 
 
-if (menuToggle && navLinks) {
+if (
+  menuToggle &&
+  navLinks
+) {
 
   menuToggle.addEventListener(
     "click",
     () => {
 
       const open =
-        navLinks.classList.toggle("active");
+        navLinks.classList.toggle(
+          "active"
+        );
 
 
       menuToggle.classList.toggle(
@@ -368,7 +416,7 @@ if (menuToggle && navLinks) {
 
 
 // =========================================
-// LOAD PROPERTIES FROM BACKEND
+// LOAD PROPERTIES FROM API
 // =========================================
 
 async function loadProperties() {
@@ -378,8 +426,15 @@ async function loadProperties() {
 
   propertyGrid.innerHTML = `
     <div class="loading-state">
-      <h3>Finding beautiful stays...</h3>
-      <p>Please wait a moment.</p>
+
+      <h3>
+        Finding beautiful stays...
+      </h3>
+
+      <p>
+        Please wait a moment.
+      </p>
+
     </div>
   `;
 
@@ -391,9 +446,11 @@ async function loadProperties() {
 
 
     if (!response.ok) {
+
       throw new Error(
         "Unable to load properties."
       );
+
     }
 
 
@@ -403,7 +460,9 @@ async function loadProperties() {
 
     if (
       !data.success ||
-      !Array.isArray(data.properties)
+      !Array.isArray(
+        data.properties
+      )
     ) {
 
       throw new Error(
@@ -417,7 +476,9 @@ async function loadProperties() {
       data.properties;
 
 
-    displayProperties(properties);
+    displayProperties(
+      properties
+    );
 
 
   } catch (error) {
@@ -427,11 +488,15 @@ async function loadProperties() {
 
     propertyGrid.innerHTML = `
       <div class="empty-state">
-        <h3>Something went wrong</h3>
+
+        <h3>
+          Something went wrong
+        </h3>
+
         <p>
           We couldn't load the available stays.
-          Please try again later.
         </p>
+
       </div>
     `;
 
@@ -441,7 +506,7 @@ async function loadProperties() {
 
 
 // =========================================
-// START APPLICATION
+// START
 // =========================================
 
 loadProperties();
