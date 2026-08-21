@@ -9,25 +9,34 @@ const propertyDetails =
 // =========================================
 
 const propertyImages = {
-  1: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1400&q=85",
 
-  2: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1400&q=85",
+  1:
+    "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1400&q=85",
 
-  3: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1400&q=85",
+  2:
+    "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1400&q=85",
 
-  4: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1400&q=85",
+  3:
+    "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1400&q=85",
 
-  5: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1400&q=85",
+  4:
+    "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1400&q=85",
 
-  6: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1400&q=85"
+  5:
+    "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1400&q=85",
+
+  6:
+    "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1400&q=85"
+
 };
 
 
 // =========================================
-// PROPERTY DESCRIPTIONS
+// DESCRIPTIONS
 // =========================================
 
 const propertyDescriptions = {
+
   1:
     "A comfortable modern apartment designed for guests looking for a relaxing stay in Lagos.",
 
@@ -45,6 +54,7 @@ const propertyDescriptions = {
 
   6:
     "A premium hotel stay in Ikoyi with a calm atmosphere for business or leisure."
+
 };
 
 
@@ -53,12 +63,14 @@ const propertyDescriptions = {
 // =========================================
 
 const amenities = [
+
   "Wi-Fi",
   "Air conditioning",
   "Private bathroom",
   "Comfortable beds",
   "24/7 support",
   "Smart TV"
+
 ];
 
 
@@ -67,7 +79,11 @@ const amenities = [
 // =========================================
 
 function formatPrice(price) {
-  return new Intl.NumberFormat("en-NG").format(price);
+
+  return new Intl.NumberFormat(
+    "en-NG"
+  ).format(price);
+
 }
 
 
@@ -85,6 +101,7 @@ function getPropertyId() {
   return Number(
     params.get("id")
   );
+
 }
 
 
@@ -94,7 +111,9 @@ function getPropertyId() {
 
 function displayProperty(property) {
 
-  if (!propertyDetails) return;
+  if (!propertyDetails) {
+    return;
+  }
 
 
   const type =
@@ -238,6 +257,7 @@ function displayProperty(property) {
       </div>
 
     </div>
+
   `;
 
 
@@ -270,7 +290,9 @@ function displayProperty(property) {
 
 async function loadProperty() {
 
-  if (!propertyDetails) return;
+  if (!propertyDetails) {
+    return;
+  }
 
 
   const propertyId =
@@ -280,6 +302,7 @@ async function loadProperty() {
   if (!propertyId) {
 
     propertyDetails.innerHTML = `
+
       <div class="empty-state">
 
         <h2>
@@ -298,6 +321,7 @@ async function loadProperty() {
         </a>
 
       </div>
+
     `;
 
     return;
@@ -312,14 +336,30 @@ async function loadProperty() {
 
 
     if (!response.ok) {
+
       throw new Error(
         "Unable to load property."
       );
+
     }
 
 
     const data =
       await response.json();
+
+
+    if (
+      !data.success ||
+      !Array.isArray(
+        data.properties
+      )
+    ) {
+
+      throw new Error(
+        "Invalid property data."
+      );
+
+    }
 
 
     const property =
@@ -347,6 +387,7 @@ async function loadProperty() {
 
 
     propertyDetails.innerHTML = `
+
       <div class="empty-state">
 
         <h2>
@@ -365,6 +406,7 @@ async function loadProperty() {
         </a>
 
       </div>
+
     `;
 
   }
