@@ -1,93 +1,92 @@
-// ==========================================
-// STAYFINDER DATA
-// ==========================================
-
 const properties = [
   {
     id: 1,
-    name: "The Green Haven",
-    location: "Lekki, Lagos",
+    name: "Modern City Apartment",
+    location: "Lagos, Nigeria",
     type: "shortlet",
-    price: "₦85,000",
-    guests: "4 guests",
-    beds: "2 beds",
+    price: 85000,
+    guests: 4,
+    beds: 2,
     image:
-      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=80"
+      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=85"
   },
 
   {
     id: 2,
-    name: "Palm View Residence",
-    location: "Victoria Island, Lagos",
+    name: "The Greenview Hotel",
+    location: "Ikeja, Lagos",
     type: "hotel",
-    price: "₦120,000",
-    guests: "2 guests",
-    beds: "1 king bed",
+    price: 65000,
+    guests: 2,
+    beds: 1,
     image:
-      "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=900&q=80"
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=900&q=85"
   },
 
   {
     id: 3,
-    name: "The Urban Escape",
-    location: "Ikoyi, Lagos",
+    name: "Luxury Lekki Residence",
+    location: "Lekki, Lagos",
     type: "shortlet",
-    price: "₦150,000",
-    guests: "6 guests",
-    beds: "3 beds",
+    price: 120000,
+    guests: 6,
+    beds: 3,
     image:
-      "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=900&q=80"
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=900&q=85"
   },
 
   {
     id: 4,
-    name: "Lagos Bay Hotel",
+    name: "Palm View Hotel",
     location: "Victoria Island, Lagos",
     type: "hotel",
-    price: "₦95,000",
-    guests: "2 guests",
-    beds: "1 king bed",
+    price: 95000,
+    guests: 2,
+    beds: 1,
     image:
-      "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=900&q=80"
+      "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=900&q=85"
   },
 
   {
     id: 5,
-    name: "The Cozy Apartment",
+    name: "Serene Stay Apartment",
     location: "Yaba, Lagos",
     type: "shortlet",
-    price: "₦55,000",
-    guests: "3 guests",
-    beds: "2 beds",
+    price: 70000,
+    guests: 3,
+    beds: 2,
     image:
-      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&q=80"
+      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&q=85"
   },
 
   {
     id: 6,
-    name: "Skyline Suites",
-    location: "Ikeja, Lagos",
+    name: "Ocean Breeze Hotel",
+    location: "Ikoyi, Lagos",
     type: "hotel",
-    price: "₦75,000",
-    guests: "2 guests",
-    beds: "1 king bed",
+    price: 110000,
+    guests: 2,
+    beds: 1,
     image:
-      "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=900&q=80"
+      "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=900&q=85"
   }
 ];
 
 
-// ==========================================
-// PROPERTY ELEMENT
-// ==========================================
+// =========================================
+// PROPERTY DISPLAY
+// =========================================
 
 const propertyGrid =
   document.getElementById("propertyGrid");
 
 
-// ==========================================
-// DISPLAY PROPERTIES
-// ==========================================
+function formatPrice(price) {
+  return new Intl.NumberFormat(
+    "en-NG"
+  ).format(price);
+}
+
 
 function displayProperties(list) {
 
@@ -108,14 +107,13 @@ function displayProperties(list) {
   }
 
 
-  propertyGrid.innerHTML = list
-    .map((property) => {
+  propertyGrid.innerHTML =
+    list.map((property) => {
 
       const type =
         property.type === "shortlet"
           ? "Short-let"
           : "Hotel";
-
 
       return `
         <article
@@ -161,11 +159,11 @@ function displayProperties(list) {
             <div class="property-details">
 
               <span>
-                ${property.guests}
+                👤 ${property.guests} guests
               </span>
 
               <span>
-                ${property.beds}
+                🛏 ${property.beds} beds
               </span>
 
             </div>
@@ -173,10 +171,10 @@ function displayProperties(list) {
 
             <div class="property-bottom">
 
-              <div class="property-price">
-                ${property.price}
+              <p class="property-price">
+                ₦${formatPrice(property.price)}
                 <span>/ night</span>
-              </div>
+              </p>
 
               <button
                 class="view-button"
@@ -192,18 +190,74 @@ function displayProperties(list) {
 
         </article>
       `;
+    }).join("");
 
-    })
-    .join("");
-
-
-  attachPropertyEvents();
+  addPropertyEvents();
 }
 
 
-// ==========================================
+// =========================================
+// PROPERTY BUTTONS
+// =========================================
+
+function addPropertyEvents() {
+
+  document
+    .querySelectorAll("[data-favorite]")
+    .forEach((button) => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          button.classList.toggle("saved");
+
+          button.textContent =
+            button.classList.contains("saved")
+              ? "♥"
+              : "♡";
+
+        }
+      );
+
+    });
+
+
+  document
+    .querySelectorAll("[data-view]")
+    .forEach((button) => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          const id =
+            Number(button.dataset.view);
+
+          const property =
+            properties.find(
+              (item) => item.id === id
+            );
+
+          if (!property) return;
+
+          alert(
+            `${property.name}\n\n` +
+            `${property.location}\n` +
+            `₦${formatPrice(property.price)} per night\n\n` +
+            `Booking details will be connected to the backend in the next stage.`
+          );
+
+        }
+      );
+
+    });
+}
+
+
+// =========================================
 // SEARCH
-// ==========================================
+// =========================================
 
 const searchButton =
   document.getElementById("searchButton");
@@ -226,23 +280,18 @@ function searchProperties() {
     typeInput.value;
 
 
-  const results =
+  const filtered =
     properties.filter((property) => {
 
       const matchesLocation =
         location === "" ||
         property.location
           .toLowerCase()
-          .includes(location) ||
-        property.name
-          .toLowerCase()
           .includes(location);
-
 
       const matchesType =
         type === "all" ||
         property.type === type;
-
 
       return (
         matchesLocation &&
@@ -252,8 +301,7 @@ function searchProperties() {
     });
 
 
-  displayProperties(results);
-
+  displayProperties(filtered);
 
   document
     .getElementById("stays")
@@ -273,10 +321,6 @@ if (searchButton) {
 }
 
 
-// ==========================================
-// ENTER KEY SEARCH
-// ==========================================
-
 if (locationInput) {
 
   locationInput.addEventListener(
@@ -293,95 +337,15 @@ if (locationInput) {
 }
 
 
-// ==========================================
-// PROPERTY BUTTONS
-// ==========================================
-
-function attachPropertyEvents() {
-
-  const favoriteButtons =
-    document.querySelectorAll(
-      "[data-favorite]"
-    );
-
-
-  favoriteButtons.forEach((button) => {
-
-    button.addEventListener(
-      "click",
-      () => {
-
-        const isSaved =
-          button.classList.toggle("saved");
-
-
-        button.textContent =
-          isSaved
-            ? "♥"
-            : "♡";
-
-      }
-    );
-
-  });
-
-
-  const viewButtons =
-    document.querySelectorAll(
-      "[data-view]"
-    );
-
-
-  viewButtons.forEach((button) => {
-
-    button.addEventListener(
-      "click",
-      () => {
-
-        const id =
-          Number(
-            button.dataset.view
-          );
-
-
-        const property =
-          properties.find(
-            (item) =>
-              item.id === id
-          );
-
-
-        if (!property) return;
-
-
-        alert(
-          `${property.name}\n\n` +
-          `${property.location}\n` +
-          `${property.price} per night\n\n` +
-          `Property details coming soon.`
-        );
-
-      }
-    );
-
-  });
-
-}
-
-
-// ==========================================
-// MOBILE NAVIGATION
-// ==========================================
+// =========================================
+// MOBILE MENU
+// =========================================
 
 const menuToggle =
-  document.querySelector(
-    ".menu-toggle"
-  );
+  document.querySelector(".menu-toggle");
 
 const navLinks =
-  document.querySelector(
-    ".nav-links"
-  );
+  document.querySelector(".nav-links");
 
 
 if (menuToggle && navLinks) {
@@ -391,16 +355,12 @@ if (menuToggle && navLinks) {
     () => {
 
       const open =
-        navLinks.classList.toggle(
-          "active"
-        );
-
+        navLinks.classList.toggle("active");
 
       menuToggle.classList.toggle(
         "active",
         open
       );
-
 
       menuToggle.setAttribute(
         "aria-expanded",
@@ -440,8 +400,8 @@ if (menuToggle && navLinks) {
 }
 
 
-// ==========================================
+// =========================================
 // INITIAL LOAD
-// ==========================================
+// =========================================
 
 displayProperties(properties);
