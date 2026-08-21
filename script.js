@@ -1,8 +1,7 @@
+const API_URL = "/.netlify/functions/properties";
+
 const propertyGrid =
   document.getElementById("propertyGrid");
-
-const searchButton =
-  document.getElementById("searchButton");
 
 const locationInput =
   document.getElementById("locationInput");
@@ -10,10 +9,37 @@ const locationInput =
 const typeInput =
   document.getElementById("typeInput");
 
-const API_URL =
-  "/.netlify/functions/properties";
+const searchButton =
+  document.getElementById("searchButton");
 
-let properties = [];
+let allProperties = [];
+
+
+// =========================================
+// PROPERTY IMAGES
+// =========================================
+
+const propertyImages = {
+
+  1:
+    "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=85",
+
+  2:
+    "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=900&q=85",
+
+  3:
+    "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=900&q=85",
+
+  4:
+    "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=900&q=85",
+
+  5:
+    "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&q=85",
+
+  6:
+    "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=900&q=85"
+
+};
 
 
 // =========================================
@@ -30,50 +56,25 @@ function formatPrice(price) {
 
 
 // =========================================
-// PROPERTY IMAGES
-// =========================================
-
-function getPropertyImage(id) {
-
-  const images = {
-
-    1:
-      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=85",
-
-    2:
-      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=900&q=85",
-
-    3:
-      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=900&q=85",
-
-    4:
-      "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=900&q=85",
-
-    5:
-      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&q=85",
-
-    6:
-      "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=900&q=85"
-
-  };
-
-  return images[id];
-
-}
-
-
-// =========================================
 // DISPLAY PROPERTIES
 // =========================================
 
-function displayProperties(list) {
+function displayProperties(
+  properties
+) {
 
-  if (!propertyGrid) return;
+  if (!propertyGrid) {
+    return;
+  }
 
 
-  if (list.length === 0) {
+  if (
+    !properties ||
+    properties.length === 0
+  ) {
 
     propertyGrid.innerHTML = `
+
       <div class="empty-state">
 
         <h3>
@@ -85,6 +86,7 @@ function displayProperties(list) {
         </p>
 
       </div>
+
     `;
 
     return;
@@ -93,173 +95,118 @@ function displayProperties(list) {
 
 
   propertyGrid.innerHTML =
-    list.map((property) => {
+    properties.map(
+      (property) => {
 
-      const type =
-        property.type === "shortlet"
-          ? "Short-let"
-          : "Hotel";
+        const image =
+          propertyImages[property.id];
 
 
-      return `
+        const type =
+          property.type === "shortlet"
+            ? "Short-let"
+            : "Hotel";
 
-        <article
-          class="property-card"
-          data-id="${property.id}"
-        >
 
-          <div class="property-image">
+        return `
 
-            <img
-              src="${getPropertyImage(property.id)}"
-              alt="${property.name}"
-              loading="lazy"
+          <article
+            class="property-card"
+          >
+
+            <div
+              class="property-image"
             >
 
-            <span class="property-type">
-              ${type}
-            </span>
+              <img
+                src="${image}"
+                alt="${property.name}"
+                loading="lazy"
+              >
 
-
-            <button
-              class="favorite"
-              type="button"
-              aria-label="Save ${property.name}"
-              data-favorite="${property.id}"
-            >
-              ♡
-            </button>
-
-          </div>
-
-
-          <div class="property-info">
-
-            <p class="property-location">
-              ${property.location}
-            </p>
-
-
-            <h3>
-              ${property.name}
-            </h3>
-
-
-            <div class="property-details">
-
-              <span>
-                👤 ${property.guests} guests
-              </span>
-
-              <span>
-                🛏 ${property.beds} beds
+              <span
+                class="property-type"
+              >
+                ${type}
               </span>
 
             </div>
 
 
-            <div class="property-bottom">
+            <div
+              class="property-content"
+            >
 
-              <p class="property-price">
-
-                ₦${formatPrice(property.price)}
-
-                <span>
-                  / night
-                </span>
-
+              <p
+                class="property-location"
+              >
+                📍 ${property.location}
               </p>
 
 
-              <button
-                class="view-button"
-                type="button"
-                data-view="${property.id}"
+              <h3>
+                ${property.name}
+              </h3>
+
+
+              <div
+                class="property-meta"
               >
-                View stay
-              </button>
+
+                <span>
+                  👤 ${property.guests} guests
+                </span>
+
+                <span>
+                  🛏 ${property.beds} beds
+                </span>
+
+              </div>
+
+
+              <div
+                class="property-footer"
+              >
+
+                <div>
+
+                  <strong>
+                    ₦${formatPrice(property.price)}
+                  </strong>
+
+                  <small>
+                    / night
+                  </small>
+
+                </div>
+
+
+                <a
+                  href="property.html?id=${property.id}"
+                  class="view-button"
+                >
+                  View stay
+                </a>
+
+              </div>
 
             </div>
 
-          </div>
+          </article>
 
-        </article>
+        `;
 
-      `;
-
-    }).join("");
-
-
-  addPropertyEvents();
+      }
+    ).join("");
 
 }
 
 
 // =========================================
-// PROPERTY EVENTS
+// FILTER PROPERTIES
 // =========================================
 
-function addPropertyEvents() {
-
-
-  // FAVORITES
-
-  document
-    .querySelectorAll("[data-favorite]")
-    .forEach((button) => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          button.classList.toggle(
-            "saved"
-          );
-
-
-          button.textContent =
-            button.classList.contains(
-              "saved"
-            )
-              ? "♥"
-              : "♡";
-
-        }
-      );
-
-    });
-
-
-  // VIEW PROPERTY
-
-  document
-    .querySelectorAll("[data-view]")
-    .forEach((button) => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          const id =
-            button.dataset.view;
-
-
-          window.location.href =
-            `property.html?id=${id}`;
-
-        }
-      );
-
-    });
-
-}
-
-
-// =========================================
-// SEARCH
-// =========================================
-
-function searchProperties() {
+function filterProperties() {
 
   const location =
     locationInput.value
@@ -272,12 +219,15 @@ function searchProperties() {
 
 
   const filtered =
-    properties.filter(
+    allProperties.filter(
       (property) => {
 
         const matchesLocation =
-          location === "" ||
+          !location ||
           property.location
+            .toLowerCase()
+            .includes(location) ||
+          property.name
             .toLowerCase()
             .includes(location);
 
@@ -301,134 +251,40 @@ function searchProperties() {
   );
 
 
-  document
-    .getElementById("stays")
-    ?.scrollIntoView({
+  const staysSection =
+    document.getElementById(
+      "stays"
+    );
+
+
+  if (staysSection) {
+
+    staysSection.scrollIntoView({
       behavior: "smooth"
     });
 
-}
-
-
-if (searchButton) {
-
-  searchButton.addEventListener(
-    "click",
-    searchProperties
-  );
-
-}
-
-
-if (locationInput) {
-
-  locationInput.addEventListener(
-    "keydown",
-    (event) => {
-
-      if (event.key === "Enter") {
-
-        searchProperties();
-
-      }
-
-    }
-  );
+  }
 
 }
 
 
 // =========================================
-// MOBILE MENU
-// =========================================
-
-const menuToggle =
-  document.querySelector(
-    ".menu-toggle"
-  );
-
-
-const navLinks =
-  document.querySelector(
-    ".nav-links"
-  );
-
-
-if (
-  menuToggle &&
-  navLinks
-) {
-
-  menuToggle.addEventListener(
-    "click",
-    () => {
-
-      const open =
-        navLinks.classList.toggle(
-          "active"
-        );
-
-
-      menuToggle.classList.toggle(
-        "active",
-        open
-      );
-
-
-      menuToggle.setAttribute(
-        "aria-expanded",
-        String(open)
-      );
-
-    }
-  );
-
-
-  navLinks
-    .querySelectorAll("a")
-    .forEach((link) => {
-
-      link.addEventListener(
-        "click",
-        () => {
-
-          navLinks.classList.remove(
-            "active"
-          );
-
-
-          menuToggle.classList.remove(
-            "active"
-          );
-
-
-          menuToggle.setAttribute(
-            "aria-expanded",
-            "false"
-          );
-
-        }
-      );
-
-    });
-
-}
-
-
-// =========================================
-// LOAD PROPERTIES FROM API
+// LOAD PROPERTIES
 // =========================================
 
 async function loadProperties() {
 
-  if (!propertyGrid) return;
+  if (!propertyGrid) {
+    return;
+  }
 
 
   propertyGrid.innerHTML = `
+
     <div class="loading-state">
 
       <h3>
-        Finding beautiful stays...
+        Finding your stays...
       </h3>
 
       <p>
@@ -436,6 +292,7 @@ async function loadProperties() {
       </p>
 
     </div>
+
   `;
 
 
@@ -472,12 +329,12 @@ async function loadProperties() {
     }
 
 
-    properties =
+    allProperties =
       data.properties;
 
 
     displayProperties(
-      properties
+      allProperties
     );
 
 
@@ -487,20 +344,166 @@ async function loadProperties() {
 
 
     propertyGrid.innerHTML = `
+
       <div class="empty-state">
 
         <h3>
-          Something went wrong
+          We couldn't load the stays
         </h3>
 
         <p>
-          We couldn't load the available stays.
+          Please refresh the page and try again.
         </p>
 
+        <button
+          type="button"
+          class="contact-button"
+          id="retryButton"
+        >
+          Try Again
+        </button>
+
       </div>
+
     `;
 
+
+    const retryButton =
+      document.getElementById(
+        "retryButton"
+      );
+
+
+    if (retryButton) {
+
+      retryButton.addEventListener(
+        "click",
+        loadProperties
+      );
+
+    }
+
   }
+
+}
+
+
+// =========================================
+// SEARCH BUTTON
+// =========================================
+
+if (searchButton) {
+
+  searchButton.addEventListener(
+    "click",
+    filterProperties
+  );
+
+}
+
+
+// =========================================
+// SEARCH WITH ENTER
+// =========================================
+
+if (locationInput) {
+
+  locationInput.addEventListener(
+    "keydown",
+    (event) => {
+
+      if (
+        event.key === "Enter"
+      ) {
+
+        event.preventDefault();
+
+        filterProperties();
+
+      }
+
+    }
+  );
+
+}
+
+
+// =========================================
+// TYPE FILTER
+// =========================================
+
+if (typeInput) {
+
+  typeInput.addEventListener(
+    "change",
+    filterProperties
+  );
+
+}
+
+
+// =========================================
+// MOBILE NAVIGATION
+// =========================================
+
+const menuToggle =
+  document.querySelector(
+    ".menu-toggle"
+  );
+
+const navLinks =
+  document.querySelector(
+    ".nav-links"
+  );
+
+
+if (
+  menuToggle &&
+  navLinks
+) {
+
+  menuToggle.addEventListener(
+    "click",
+    () => {
+
+      const isOpen =
+        navLinks.classList.toggle(
+          "active"
+        );
+
+
+      menuToggle.setAttribute(
+        "aria-expanded",
+        isOpen
+      );
+
+    }
+  );
+
+
+  navLinks
+    .querySelectorAll("a")
+    .forEach(
+      (link) => {
+
+        link.addEventListener(
+          "click",
+          () => {
+
+            navLinks.classList.remove(
+              "active"
+            );
+
+            menuToggle.setAttribute(
+              "aria-expanded",
+              "false"
+            );
+
+          }
+        );
+
+      }
+    );
 
 }
 
