@@ -12,12 +12,52 @@
 
   <meta
     name="description"
-    content="Request a booking with StayFinder."
+    content="Request a hotel or short-let booking through StayFinder."
   >
 
-  <title>Request a Booking | StayFinder</title>
+  <meta
+    name="keywords"
+    content="Lagos hotels, Lagos shortlets, accommodation, booking, StayFinder"
+  >
 
-  <link rel="stylesheet" href="style.css">
+  <meta
+    name="author"
+    content="Quadri Alayaki"
+  >
+
+  <meta
+    name="theme-color"
+    content="#172019"
+  >
+
+  <meta
+    property="og:title"
+    content="Request a Booking | StayFinder"
+  >
+
+  <meta
+    property="og:description"
+    content="Request your next hotel or short-let stay through StayFinder."
+  >
+
+  <meta
+    property="og:type"
+    content="website"
+  >
+
+  <meta
+    name="twitter:card"
+    content="summary"
+  >
+
+  <title>
+    Request a Booking | StayFinder
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
 
 </head>
 
@@ -29,7 +69,10 @@
 
   <nav class="navbar">
 
-    <a href="index.html" class="logo">
+    <a
+      href="index.html"
+      class="logo"
+    >
       Stay<span>Finder</span>
     </a>
 
@@ -87,6 +130,8 @@
     <div class="booking-container">
 
 
+      <!-- INTRO -->
+
       <div class="booking-intro">
 
         <p class="eyebrow">
@@ -95,22 +140,33 @@
 
 
         <h1>
+
           Request your
-          <span>stay.</span>
+          <span>
+            stay.
+          </span>
+
         </h1>
 
 
         <p>
+
           Complete the form and send us your
           booking request. We'll get back to you
           with availability and confirmation.
+
         </p>
 
       </div>
 
 
 
+      <!-- BOOKING CARD -->
+
       <div class="booking-card">
+
+
+        <!-- SELECTED PROPERTY -->
 
         <div
           id="selectedProperty"
@@ -125,13 +181,18 @@
 
 
 
+        <!-- FORM -->
+
         <form
           id="bookingForm"
           novalidate
         >
 
 
+          <!-- NAME + PHONE -->
+
           <div class="form-row">
+
 
             <div class="form-group">
 
@@ -144,6 +205,7 @@
                 id="guestName"
                 name="guestName"
                 placeholder="Your full name"
+                autocomplete="name"
                 required
               >
 
@@ -161,6 +223,7 @@
                 id="guestPhone"
                 name="guestPhone"
                 placeholder="Your phone number"
+                autocomplete="tel"
                 required
               >
 
@@ -169,6 +232,8 @@
           </div>
 
 
+
+          <!-- EMAIL -->
 
           <div class="form-group">
 
@@ -181,6 +246,7 @@
               id="guestEmail"
               name="guestEmail"
               placeholder="you@example.com"
+              autocomplete="email"
               required
             >
 
@@ -188,7 +254,10 @@
 
 
 
+          <!-- DATES -->
+
           <div class="form-row">
+
 
             <div class="form-group">
 
@@ -224,6 +293,8 @@
           </div>
 
 
+
+          <!-- GUESTS -->
 
           <div class="form-group">
 
@@ -279,6 +350,8 @@
 
 
 
+          <!-- MESSAGE -->
+
           <div class="form-group">
 
             <label for="guestMessage">
@@ -296,6 +369,8 @@
 
 
 
+          <!-- SUBMIT -->
+
           <button
             type="submit"
             class="booking-submit"
@@ -305,10 +380,13 @@
           </button>
 
 
+          <!-- FORM RESPONSE -->
+
           <p
             id="formMessage"
             class="form-message"
             role="status"
+            aria-live="polite"
           ></p>
 
         </form>
@@ -329,6 +407,7 @@
       © 2026 StayFinder
     </p>
 
+
     <p>
       Built by Quadri Alayaki
     </p>
@@ -336,6 +415,8 @@
   </footer>
 
 
+
+  <!-- JAVASCRIPT -->
 
   <script src="booking.js"></script>
 
